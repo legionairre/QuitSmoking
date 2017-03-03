@@ -10,6 +10,7 @@ import { Storage } from '@ionic/storage';
 export class HomePage {
 
 	public smokeCount: number = 0;
+	public boxCount: number = 0;
 
 	constructor(
 		public navCtrl: NavController,
@@ -17,10 +18,30 @@ export class HomePage {
 		public actionSheetCtrl: ActionSheetController,
 		public storage: Storage) {
 
-		this.storage.get('smokeCount').then((val)=>{
+		this.storage.get('smokeCount').then((val) => {
 			this.smokeCount = val;
+		});
+
+		this.storage.get('boxCount').then((val) => {
+			this.boxCount = val;
 		})
 
+		this.evaluateBox();
+
+	}
+
+	evaluateBox() {
+		this.storage.get('smokeCount').then((val)=> {
+			if(val>=20){
+				this.boxCount += 1;
+				this.smokeCount = 0;
+				this.storage.set('smokeCount', this.smokeCount);
+				this.storage.set('boxCount', this.boxCount);
+			}if(val<0){
+				this.smokeCount = 0;
+				this.storage.set('smokeCount', this.smokeCount);
+			}
+		})
 	}
 
 	smokeCigar() {
@@ -39,6 +60,7 @@ export class HomePage {
 					handler: () => {
 						this.smokeCount += 1;
 						this.storage.set('smokeCount', this.smokeCount);
+						this.evaluateBox();
 					}
 				}
 			]
@@ -48,23 +70,52 @@ export class HomePage {
 
 	resetCigar() {
 		this.smokeCount = 0;
+		this.boxCount = 0;
 		this.storage.set('smokeCount', this.smokeCount);
+		this.storage.set('boxCount', this.boxCount);
 	}
 
 	removeSmokeCigar() {
 		this.smokeCount -= 1;
 		this.storage.set('smokeCount', this.smokeCount);
+		this.storage.get('smokeCount').then((val)=>{
+			if(val<=0){
+				this.storage.get('boxCount').then((box)=>{
+					if(box!=0){
+						this.removeBoxCigar();
+					}
+					if(box==0){
+						return;
+					}
+				})
+			}
+		})
+		this.evaluateBox();
+	}
+
+	removeBoxCigar() {
+		this.boxCount -= 1;
+		this.storage.set('boxCount', this.boxCount);
+		this.evaluateBox();
 	}
 
 	openActionSheetCtrl() {
 		let actionSheet = this.actionSheetCtrl.create({
 			buttons: [
 				{
-					text: 'Remove Smoking',
+					text: 'Remove Smoke',
 					icon: 'remove',
 					cssClass: 'actionSheet',
 					handler: () => {
 						this.removeSmokeCigar();
+					}
+				},
+				{
+					text: 'Remove Box',
+					icon: 'remove',
+					cssClass: 'actionSheet',
+					handler: () => {
+						this.removeBoxCigar();
 					}
 				},
 				{

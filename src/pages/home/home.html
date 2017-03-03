@@ -14,8 +14,8 @@
 <ion-content padding>
 	<ion-item no-lines>
 	  <ion-icon name="no-smoking" item-left color="danger"></ion-icon>
-	  Smoke Count
-	  <ion-badge style="font-size: 2rem;" item-right color="danger">{{smokeCount}}</ion-badge>
+	  Total Smoke
+	  <ion-badge item-right color="danger"><div *ngIf="boxCount > 0">{{boxCount}} box</div>{{smokeCount}} cigarette</ion-badge>
 	</ion-item>
 	<div class="button-center">
 		<button ion-button round (click)="smokeCigar()">I smoked one more...</button>
