@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar>
+  <ion-buttons end>
+      <button ion-button icon-only (click)=openActionSheetCtrl()>
+        <ion-icon ios="ios-more" md="md-more"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>
+      Quit Smoking
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+	<ion-item no-lines>
+	  <ion-icon name="no-smoking" item-left color="danger"></ion-icon>
+	  Smoke Count
+	  <ion-badge style="font-size: 2rem;" item-right color="danger">{{smokeCount}}</ion-badge>
+	</ion-item>
+	<div class="button-center">
+		<button ion-button round (click)="smokeCigar()">I smoked one more...</button>
+	</div>
+</ion-content>
