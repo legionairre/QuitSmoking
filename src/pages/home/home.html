@@ -20,4 +20,12 @@
 	<div class="button-center">
 		<button ion-button round (click)="smokeCigar()">I smoked one more...</button>
 	</div>
+  <ion-fab right bottom mini>
+    <button ion-fab color="dark" (click)="openSettingsPage()" ><ion-icon name="settings"></ion-icon></button>
+  </ion-fab>
 </ion-content>
+<ion-footer *ngIf="totalCost>0">
+  <ion-toolbar>
+    <ion-title>Total Cost = {{totalCost}} &#x20BA; </ion-title>
+  </ion-toolbar>
+</ion-footer>
